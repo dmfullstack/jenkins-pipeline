@@ -26,7 +26,7 @@ node {
             echo "The sonar server could not be reached ${error}"
         }
      }
-/*
+
     stage("Image Prune"){
         imagePrune(CONTAINER_NAME)
     }
@@ -34,7 +34,7 @@ node {
     stage('Image Build'){
         imageBuild(CONTAINER_NAME, CONTAINER_TAG)
     }
-*/
+
     stage('Push to Docker Registry'){
         withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
@@ -62,7 +62,7 @@ def imageBuild(containerName, tag){
 def pushToImage(containerName, tag, dockerUser, dockerPassword){
     sh "echo $dockerUser"
     sh "echo $dockerPassword"
-    sh "echo 'DM\$010674' |  docker login --username dineshmetkari --password-stdin"
+    sh "docker login --username dineshmetkari --password DM\$010674"
     sh "docker tag $containerName:$tag $dockerUser/$containerName:$tag"
     sh "docker push $dockerUser/$containerName:$tag"
     echo "Image push complete"
