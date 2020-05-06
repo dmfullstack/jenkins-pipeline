@@ -49,25 +49,25 @@ node {
 
 def imagePrune(containerName){
     try {
-        sh "sudo  env 'PATH=$PATH' docker image prune -f"
-        sh "sudo  env 'PATH=$PATH' docker stop $containerName"
+        sh "docker image prune -f"
+        sh "docker stop $containerName"
     } catch(error){}
 }
 
 def imageBuild(containerName, tag){
-    sh "sudo env 'PATH=$PATH' docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
+    sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
     echo "Image build complete"
 }
 
 def pushToImage(containerName, tag, dockerUser, dockerPassword){
-    sh "sudo env 'PATH=$PATH' docker login -u $dockerUser -p $dockerPassword"
-    sh "sudo env 'PATH=$PATH' docker tag $containerName:$tag $dockerUser/$containerName:$tag"
-    sh "sudo env 'PATH=$PATH' docker push $dockerUser/$containerName:$tag"
+    sh "docker login -u $dockerUser -p $dockerPassword"
+    sh "docker tag $containerName:$tag $dockerUser/$containerName:$tag"
+    sh "docker push $dockerUser/$containerName:$tag"
     echo "Image push complete"
 }
 
 def runApp(containerName, tag, dockerHubUser, httpPort){
-    sh "sudo env 'PATH=$PATH' docker pull $dockerHubUser/$containerName"
-    sh "sudo env 'PATH=$PATH' docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
+    sh "docker pull $dockerHubUser/$containerName"
+    sh "docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
     echo "Application started on port: ${httpPort} (http)"
 }
