@@ -18,7 +18,7 @@ node {
     stage('Build'){
         sh "mvn clean install"
     }
-
+/*
     stage('Sonar'){
         try {
             sh "mvn sonar:sonar"
@@ -34,7 +34,7 @@ node {
     stage('Image Build'){
         imageBuild(CONTAINER_NAME, CONTAINER_TAG)
     }
-
+*/
     stage('Push to Docker Registry'){
         withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
@@ -62,7 +62,7 @@ def imageBuild(containerName, tag){
 def pushToImage(containerName, tag, dockerUser, dockerPassword){
     sh "echo $dockerUser"
     sh "echo $dockerPassword"
-    sh "docker login --username dineshmetkari --password DM\$010674"
+    sh "docker login --username dineshmetkari --password $dockerPassword"
     sh "docker tag $containerName:$tag $dockerUser/$containerName:$tag"
     sh "docker push $dockerUser/$containerName:$tag"
     echo "Image push complete"
