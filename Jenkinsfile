@@ -60,7 +60,9 @@ def imageBuild(containerName, tag){
 }
 
 def pushToImage(containerName, tag, dockerUser, dockerPassword){
-    sh "echo '$dockerPassword' | docker login --username $dockerUser --password-stdin"
+    sh "echo $dockerUser"
+    sh "echo $dockerPassword"
+    sh "echo 'DM$010674' |  sudo docker login --username dineshmetkari --password-stdin"
     sh "docker tag $containerName:$tag $dockerUser/$containerName:$tag"
     sh "docker push $dockerUser/$containerName:$tag"
     echo "Image push complete"
