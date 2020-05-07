@@ -1,4 +1,4 @@
-FROM maven:3-alpine
+FROM maven
 
 COPY pom.xml pipeline/
 
